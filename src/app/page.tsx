@@ -1,65 +1,166 @@
+'use client'
+import Matrix from "@/components/Matrix";
+import ScrollShowcase from "@/components/Scroll";
+import Banner from "@/components/sections/Banner";
+import BuiltAsSystem from "@/components/sections/BuiltAsSystem";
+import HowWeWork from "@/components/sections/HowWeWork";
+import Marquee from "@/components/sections/Marquee";
+import WhatWeShip from "@/components/sections/WhatWeShip";
+import { H2, H3, P24 } from "@/components/typography";
+import { gsap } from "@/lib/gsap";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
 import Image from "next/image";
+import { useEffect, } from "react"
+gsap.registerPlugin(ScrollSmoother)
 
 export default function Home() {
+  useEffect(() => {
+    ScrollSmoother.create({
+      smooth: 1, // how long (in seconds) it takes to "catch up" to the native scroll position
+      effects: true, // looks for data-speed and data-lag attributes on elements
+      smoothTouch: 0.1 // much shorter smoothing time on touch devices (default is NO smoothing on touch devices)
+    });
+  }, [])
+
+  useEffect(() => {
+    const inner = document.querySelector<HTMLDivElement>(".scroll-inner");
+
+    if (!inner) return;
+    const scrollTween = gsap.to(inner, {
+      y: () => -(inner.offsetHeight - window.innerHeight),
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".sec-2",
+        scroller: "#smooth-wrapper", // only if you use ScrollSmoother
+        start: "top top",
+        end: () => "+=" + inner.offsetHeight,
+        scrub: true,
+        pin: true,
+        anticipatePin: 1,
+        // markers: true,
+      },
+    });
+
+
+    const box1 = gsap.fromTo('.box-1',
+      {
+        opacity: 0,
+        y: 400,
+      },
+      {
+        opacity: 1,
+        duration: 2,
+        y: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.box-1',
+          start: "top 90%",
+          end: "top 80%",
+          // markers: true,
+          scrub: 3
+        }
+      }
+    )
+    const box2 = gsap.fromTo('.box-2',
+      {
+        opacity: 0,
+        y: 400,
+      },
+      {
+        opacity: 1,
+        duration: 2,
+        y: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.box-2',
+          start: "top 80%",
+          end: "top 60%",
+          // markers: true,
+          scrub: 4
+        }
+      }
+    )
+    const box3 = gsap.fromTo('.box-3',
+      {
+        opacity: 0,
+        y: 400,
+      },
+      {
+        opacity: 1,
+        duration: 2,
+        y: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.box-3',
+          start: "top 80%",
+          end: "top 60%",
+          // markers: true,
+          scrub: 4
+        }
+      }
+    )
+  }, []);
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      <Banner />
+
+      <BuiltAsSystem />
+
+      <WhatWeShip />
+
+      <Marquee/>
+
+      <HowWeWork/>
+
+
+
+      {/* <section className="sec-2 w-screen h-screen pb-10 overflow-hidden border-b border-dashed">
+        <div
+          className="bg-primary-dark h-79 relative z-80 bg-no-repeat bg-top-center bg-cover flex items-end justify-center pb-30"
+          style={{ backgroundImage: "url('/patterns.png')" }}
+        >
+          <H2 className="text-center">Built as a system</H2>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="max-w-400 mx-auto h-[300dvh] scroll-inner space-y-4">
+          <div className="box-1 flex items-center justify-between p-8 rounded">
+            <div className="space-y-2">
+              <h2 className="bg-zinc-900 h-16 w-100 rounded"></h2>
+              <h2 className="bg-zinc-900 h-16 w-70 rounded"></h2>
+              <p className="bg-zinc-900/60 h-5 rounded"></p>
+            </div>
+            <div className="bg-zinc-900/40 h-100 2xl:h-130 w-130 rounded"></div>
+          </div>
+
+          <div className="box-2 flex items-center justify-between p-8 rounded">
+            <div className="bg-zinc-900/40 h-130 w-130 rounded"></div>
+            <div className="space-y-2">
+              <h2 className="bg-zinc-900 h-16 w-100 rounded"></h2>
+              <h2 className="bg-zinc-900 h-16 w-70 rounded"></h2>
+              <p className="bg-zinc-900/60 h-5 rounded"></p>
+            </div>
+          </div>
+
+          <div className="box-3 flex items-center justify-between p-8 rounded">
+            <div className="space-y-2">
+              <h2 className="bg-zinc-900 h-16 w-100 rounded"></h2>
+              <h2 className="bg-zinc-900 h-16 w-70 rounded"></h2>
+              <p className="bg-zinc-900/60 h-5 rounded"></p>
+            </div>
+            <div className="bg-zinc-900/40 h-130 w-130 rounded"></div>
+          </div>
         </div>
-      </main>
-    </div>
-  );
+      </section> */}
+
+      {/* section-3 */}
+      {/* <ScrollShowcase /> */}
+
+      {/* <section className="h-screen py-20 px-10 space-y-6 pt-90">
+        <div className="flex items-center gap-6 justify-center">
+          <div data-speed="1" className="bg-cyan-800 p-8 rounded"></div>
+          <div data-speed="0.8" className="bg-zinc-800 p-8 rounded"></div>
+          <div data-speed="0.9" className="bg-purple-800 p-8 rounded"></div>
+        </div>
+      </section> */}
+    </>
+  )
 }
